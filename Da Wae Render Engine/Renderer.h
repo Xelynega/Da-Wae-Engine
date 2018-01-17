@@ -5,10 +5,11 @@
 #include "GLFW\glfw3.h"
 #include <iostream>
 
+#pragma comment(lib, "vulkan-1.lib")
+#pragma comment(lib, "glfw3.lib")
+
 #ifdef _DEBUG
 VkBool32 debug = true;
-
-
 #else
 VkBool32 debug = false;
 #endif
