@@ -7,7 +7,8 @@
 class Object
 {
 	Object(ObjectID id);
-	Object(byte modID, uint64_t global_id);
+	//Added this when I was tired and don't remember why, probably a good reason though.
+	//Object(byte addonID, uint64_t global_id);
 	RenderObject* m_renderObject;
 	ObjectID id;
 	glm::mat4 position;

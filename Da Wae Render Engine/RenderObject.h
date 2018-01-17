@@ -253,44 +253,50 @@ public:
 
 	byte* getData()
 	{
+		//I know that this is probably the ugliest way to do this, but it's probably also the shortes
 		byte header = 0xC0;
 		byte vertexSize = 8 * sizeof(glm::vec3) * 2;
 		byte indexSize = 12 * sizeof(vecu32);
 		byte uniformSize = sizeof(UniformBufferObject);
 		byte* data = new byte[4 + vertexSize + indexSize];
-		data[0] = header;
-		data[1] = vertexSize;
-		data[2] = indexSize;
-		data[3] = uniformSize;
-		((glm::vec3*)&data[4])[0] = glm::vec3( 1,  1,  1);
-		((glm::vec3*)&data[4])[1] = m_color;
-		((glm::vec3*)&data[4])[2] = glm::vec3( 1, -1,  1);
-		((glm::vec3*)&data[4])[3] = m_color;
-		((glm::vec3*)&data[4])[4] = glm::vec3(-1, -1,  1);
-		((glm::vec3*)&data[4])[5] = m_color;
-		((glm::vec3*)&data[4])[6] = glm::vec3(-1,  1,  1);
-		((glm::vec3*)&data[4])[7] = m_color;
-		((glm::vec3*)&data[4])[8] = glm::vec3( 1,  1, -1);
-		((glm::vec3*)&data[4])[9] = m_color;
-		((glm::vec3*)&data[4])[10] = glm::vec3( 1, -1, -1);
-		((glm::vec3*)&data[4])[11] = m_color;
-		((glm::vec3*)&data[4])[12] = glm::vec3(-1, -1, -1);
-		((glm::vec3*)&data[4])[13] = m_color;
-		((glm::vec3*)&data[4])[14] = glm::vec3(-1,  1, -1);
-		((glm::vec3*)&data[4])[15] = m_color;
 
-		((vecu32*)&((glm::vec3*)&data[5])[16])[0]  = { 0, 1, 2 };
-		((vecu32*)&((glm::vec3*)&data[5])[16])[1]  = { 2, 3, 0 };
-		((vecu32*)&((glm::vec3*)&data[5])[16])[2]  = { 0, 3, 7 };
-		((vecu32*)&((glm::vec3*)&data[5])[16])[3]  = { 7, 4, 0 };
-		((vecu32*)&((glm::vec3*)&data[5])[16])[4]  = { 0, 4, 5 };
-		((vecu32*)&((glm::vec3*)&data[5])[16])[5]  = { 5, 1, 0 };
-		((vecu32*)&((glm::vec3*)&data[5])[16])[6]  = { 1, 5, 6 };
-		((vecu32*)&((glm::vec3*)&data[5])[16])[7]  = { 6, 2, 1 };
-		((vecu32*)&((glm::vec3*)&data[5])[16])[8]  = { 6, 2, 3 };
-		((vecu32*)&((glm::vec3*)&data[5])[16])[9]  = { 7, 6, 2 };
-		((vecu32*)&((glm::vec3*)&data[5])[16])[10] = { 7, 4, 5 };
-		((vecu32*)&((glm::vec3*)&data[5])[16])[11] = { 5, 6, 7 };
+		data[0] = header;
+		data[1] = 0x00;
+		data[2] = vertexSize;
+		data[3] = 0x00;
+		data[4] = indexSize;
+		data[5] = 0x00;
+		data[6] = uniformSize;
+
+		((glm::vec3*)&data[7])[0] = glm::vec3( 1,  1,  1);
+		((glm::vec3*)&data[7])[1] = m_color;
+		((glm::vec3*)&data[7])[2] = glm::vec3( 1, -1,  1);
+		((glm::vec3*)&data[7])[3] = m_color;
+		((glm::vec3*)&data[7])[4] = glm::vec3(-1, -1,  1);
+		((glm::vec3*)&data[7])[5] = m_color;
+		((glm::vec3*)&data[7])[6] = glm::vec3(-1,  1,  1);
+		((glm::vec3*)&data[7])[7] = m_color;
+		((glm::vec3*)&data[7])[8] = glm::vec3( 1,  1, -1);
+		((glm::vec3*)&data[7])[9] = m_color;
+		((glm::vec3*)&data[7])[10] = glm::vec3( 1, -1, -1);
+		((glm::vec3*)&data[7])[11] = m_color;
+		((glm::vec3*)&data[7])[12] = glm::vec3(-1, -1, -1);
+		((glm::vec3*)&data[7])[13] = m_color;
+		((glm::vec3*)&data[7])[14] = glm::vec3(-1,  1, -1);
+		((glm::vec3*)&data[7])[15] = m_color;
+
+		((vecu32*)&((glm::vec3*)&data[7])[16])[0]  = { 0, 1, 2 };
+		((vecu32*)&((glm::vec3*)&data[7])[16])[1]  = { 2, 3, 0 };
+		((vecu32*)&((glm::vec3*)&data[7])[16])[2]  = { 0, 3, 7 };
+		((vecu32*)&((glm::vec3*)&data[7])[16])[3]  = { 7, 4, 0 };
+		((vecu32*)&((glm::vec3*)&data[7])[16])[4]  = { 0, 4, 5 };
+		((vecu32*)&((glm::vec3*)&data[7])[16])[5]  = { 5, 1, 0 };
+		((vecu32*)&((glm::vec3*)&data[7])[16])[6]  = { 1, 5, 6 };
+		((vecu32*)&((glm::vec3*)&data[7])[16])[7]  = { 6, 2, 1 };
+		((vecu32*)&((glm::vec3*)&data[7])[16])[8]  = { 6, 2, 3 };
+		((vecu32*)&((glm::vec3*)&data[7])[16])[9]  = { 7, 6, 2 };
+		((vecu32*)&((glm::vec3*)&data[7])[16])[10] = { 7, 4, 5 };
+		((vecu32*)&((glm::vec3*)&data[7])[16])[11] = { 5, 6, 7 };
 
 		return data;
 	}

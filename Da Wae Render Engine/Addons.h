@@ -7,7 +7,7 @@
 
 struct Addon
 {
-	uint64_t mod_id;
+	uint64_t addon_id;
 	uint64_t assigned_id;
 	std::string name;
 };
@@ -16,7 +16,7 @@ class Addons
 {
 	Addons();
 	Addon* loadedAddons;
-	Addon* getAssignedID(uint64_t mod_ID);
+	Addon* getAssignedID(uint64_t mod_ID, std::string searchTerm);
 	std::string getObjectFile(ObjectID global_id);
 	ObjectID* getAddonObjects(Addon addon);
 };

@@ -1,19 +1,19 @@
 ﻿  main.cpp
-c:\users\noahm\source\repos\da-wae-engine\da wae render engine\renderer.h(201): warning C4267: '=': conversion from 'size_t' to 'uint32_t', possible loss of data
-c:\users\noahm\source\repos\da-wae-engine\da wae render engine\renderer.h(213): warning C4018: '<': signed/unsigned mismatch
-c:\users\noahm\source\repos\da-wae-engine\da wae render engine\renderer.h(218): warning C4267: '=': conversion from 'size_t' to 'uint32_t', possible loss of data
-c:\users\noahm\source\repos\da-wae-engine\da wae render engine\renderer.h(265): warning C4018: '<': signed/unsigned mismatch
-c:\users\noahm\source\repos\da-wae-engine\da wae render engine\renderer.h(291): warning C4018: '<': signed/unsigned mismatch
-c:\users\noahm\source\repos\da-wae-engine\da wae render engine\renderer.h(314): warning C4018: '<': signed/unsigned mismatch
-c:\users\noahm\source\repos\da-wae-engine\da wae render engine\renderer.h(341): warning C4267: '=': conversion from 'size_t' to 'uint32_t', possible loss of data
-c:\users\noahm\source\repos\da-wae-engine\da wae render engine\renderer.h(345): warning C4267: '=': conversion from 'size_t' to 'uint32_t', possible loss of data
-c:\users\noahm\source\repos\da-wae-engine\da wae render engine\renderer.h(356): warning C4018: '<': signed/unsigned mismatch
-c:\users\noahm\source\repos\da-wae-engine\da wae render engine\renderer.h(374): warning C4018: '<': signed/unsigned mismatch
-c:\users\noahm\source\repos\da-wae-engine\da wae render engine\renderer.h(404): warning C4018: '<': signed/unsigned mismatch
-c:\users\noahm\source\repos\da-wae-engine\da wae render engine\renderer.h(414): warning C4018: '<': signed/unsigned mismatch
-c:\users\noahm\source\repos\da-wae-engine\da wae render engine\renderer.h(486): warning C4838: conversion from 'int' to 'uint32_t' requires a narrowing conversion
-c:\users\noahm\source\repos\da-wae-engine\da wae render engine\renderobject.h(329): warning C4244: 'argument': conversion from 'uint64_t' to 'uint32_t', possible loss of data
-c:\users\noahm\source\repos\da-wae-engine\da wae render engine\main.cpp(18): warning C4930: 'Addons addons(void)': prototyped function not called (was a variable definition intended?)
-c:\users\noahm\source\repos\da-wae-engine\da wae render engine\renderer.h(182): warning C4715: 'Renderer::initVulkan': not all control paths return a value
-c:\users\noahm\source\repos\da-wae-engine\da wae render engine\renderer.h(491): warning C4715: 'chooseSwapExtent': not all control paths return a value
+c:\users\noahm\source\repos\da-wae-engine\da wae render engine\renderer.h(208): warning C4267: '=': conversion from 'size_t' to 'uint32_t', possible loss of data
+c:\users\noahm\source\repos\da-wae-engine\da wae render engine\renderer.h(220): warning C4018: '<': signed/unsigned mismatch
+c:\users\noahm\source\repos\da-wae-engine\da wae render engine\renderer.h(225): warning C4267: '=': conversion from 'size_t' to 'uint32_t', possible loss of data
+c:\users\noahm\source\repos\da-wae-engine\da wae render engine\renderer.h(272): warning C4018: '<': signed/unsigned mismatch
+c:\users\noahm\source\repos\da-wae-engine\da wae render engine\renderer.h(298): warning C4018: '<': signed/unsigned mismatch
+c:\users\noahm\source\repos\da-wae-engine\da wae render engine\renderer.h(321): warning C4018: '<': signed/unsigned mismatch
+c:\users\noahm\source\repos\da-wae-engine\da wae render engine\renderer.h(348): warning C4267: '=': conversion from 'size_t' to 'uint32_t', possible loss of data
+c:\users\noahm\source\repos\da-wae-engine\da wae render engine\renderer.h(352): warning C4267: '=': conversion from 'size_t' to 'uint32_t', possible loss of data
+c:\users\noahm\source\repos\da-wae-engine\da wae render engine\renderer.h(363): warning C4018: '<': signed/unsigned mismatch
+c:\users\noahm\source\repos\da-wae-engine\da wae render engine\renderer.h(381): warning C4018: '<': signed/unsigned mismatch
+c:\users\noahm\source\repos\da-wae-engine\da wae render engine\renderer.h(411): warning C4018: '<': signed/unsigned mismatch
+c:\users\noahm\source\repos\da-wae-engine\da wae render engine\renderer.h(421): warning C4018: '<': signed/unsigned mismatch
+c:\users\noahm\source\repos\da-wae-engine\da wae render engine\renderer.h(493): warning C4838: conversion from 'int' to 'uint32_t' requires a narrowing conversion
+c:\users\noahm\source\repos\da-wae-engine\da wae render engine\renderobject.h(335): warning C4244: 'argument': conversion from 'uint64_t' to 'uint32_t', possible loss of data
+c:\users\noahm\source\repos\da-wae-engine\da wae render engine\main.cpp(24): warning C4930: 'Addons addons(void)': prototyped function not called (was a variable definition intended?)
+c:\users\noahm\source\repos\da-wae-engine\da wae render engine\renderer.h(189): warning C4715: 'Renderer::initVulkan': not all control paths return a value
+c:\users\noahm\source\repos\da-wae-engine\da wae render engine\renderer.h(498): warning C4715: 'chooseSwapExtent': not all control paths return a value
   Da Wae Render Engine.vcxproj -> C:\Users\noahm\Source\Repos\Da-Wae-Engine\x64\Debug\Da Wae Render Engine.exe

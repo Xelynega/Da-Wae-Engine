@@ -24,7 +24,7 @@ struct QueueFamily
 class Renderer
 {
 public:
-	Renderer() {};
+	Renderer(glm::vec4 clear) : clearColor(clear) {};
 	byte initGLFW();
 	byte splashScreen();
 	byte initWindow();
@@ -41,6 +41,7 @@ public:
 	byte createCommandPool();
 	byte createSemaphores();
 	byte createDescriptorPool();
+	byte createCommandBuffers();
 	byte copyToBuffer(VkBuffer srcBuffer, VkBuffer dstBuffer, VkDeviceSize size, VkDeviceSize dstOffset)
 	{
 		VkCommandBufferAllocateInfo allocInfo = {};
@@ -88,10 +89,12 @@ public:
 	VkExtent2D swapchainExtent;
 	std::vector<VkImageView> swapchainImageViews;
 	std::vector<VkFramebuffer> swapchainFramebuffers;
+	std::vector<VkCommandBuffer> commandBuffers;
 	VkCommandPool commandPool;
 	VkDescriptorPool descriptorPool;
 	VkSurfaceFormatKHR surfaceFormat;
 	VkRenderPass renderPass;
+	glm::vec4 clearColor;
 
 	VkSemaphore imageAvailableSemaphore;
 	VkSemaphore renderFinishedSemaphore;
@@ -177,6 +180,10 @@ byte Renderer::initVulkan()
 		return value;
 
 	value = createSemaphores();
+	if (value != 0x00)
+		return value;
+
+	value = createCommandBuffers();
 	if (value != 0x00)
 		return value;
 }
@@ -515,7 +522,7 @@ byte Renderer::createSwapchain()
 	swapInfo.imageColorSpace = surfaceFormat.colorSpace;
 	swapInfo.imageExtent = extent;
 	swapInfo.imageArrayLayers = 1;
-	swapInfo.imageUsage = VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT;
+	swapInfo.imageUsage = VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT | VK_IMAGE_USAGE_TRANSFER_DST_BIT;
 
 	uint32_t queueFamilyIndices[] = { (uint32_t)queueIndices[0].index, (uint32_t)queueIndices[1].index };
 	if (queueFamilyIndices[0] != queueFamilyIndices[1])
@@ -538,6 +545,7 @@ byte Renderer::createSwapchain()
 
 	vkGetSwapchainImagesKHR(device, swapchain, &imageCount, nullptr);
 	swapchainImages.resize(imageCount);
+	commandBuffers.resize(imageCount);
 	vkGetSwapchainImagesKHR(device, swapchain, &imageCount, swapchainImages.data());
 
 	swapchainImageFormat = surfaceFormat.format;
@@ -673,5 +681,68 @@ byte Renderer::createDescriptorPool()
 	poolInfo.maxSets = DESCRIPTOR_SET_COUNT;
 
 	vkCreateDescriptorPool(device, &poolInfo, nullptr, &descriptorPool);
+	return 0x00;
+}
+
+byte Renderer::createCommandBuffers()
+{
+	VkCommandBufferAllocateInfo allocInfo = {};
+	allocInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_ALLOCATE_INFO;
+	allocInfo.commandPool = commandPool;
+	allocInfo.level = VK_COMMAND_BUFFER_LEVEL_PRIMARY;
+	allocInfo.commandBufferCount = (uint32_t)commandBuffers.size();
+
+	vkAllocateCommandBuffers(device, &allocInfo, commandBuffers.data());
+
+	VkClearColorValue vkclearColor = { {clearColor.r, clearColor.g, clearColor.b, clearColor.a} };
+
+	VkImageSubresourceRange subResourceRange = {};
+	subResourceRange.aspectMask = VK_IMAGE_ASPECT_COLOR_BIT;
+	subResourceRange.baseMipLevel = 0;
+	subResourceRange.levelCount = 1;
+	subResourceRange.baseArrayLayer = 0;
+	subResourceRange.layerCount = 1;
+
+	for (uint32_t index = 0; index < commandBuffers.size();index++)
+	{
+		VkImageMemoryBarrier presentToClearBarrier = {};
+		presentToClearBarrier.sType = VK_STRUCTURE_TYPE_IMAGE_MEMORY_BARRIER;
+		presentToClearBarrier.srcAccessMask = VK_ACCESS_MEMORY_READ_BIT;
+		presentToClearBarrier.dstAccessMask = VK_ACCESS_TRANSFER_WRITE_BIT;
+		presentToClearBarrier.oldLayout = VK_IMAGE_LAYOUT_UNDEFINED;
+		presentToClearBarrier.newLayout = VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL;
+		presentToClearBarrier.srcQueueFamilyIndex = queueIndices[0].index;
+		presentToClearBarrier.dstQueueFamilyIndex = queueIndices[0].index;
+		presentToClearBarrier.image = swapchainImages[index];
+		presentToClearBarrier.subresourceRange = subResourceRange;
+
+		VkImageMemoryBarrier clearToPresentBarrier = {};
+		clearToPresentBarrier.sType = VK_STRUCTURE_TYPE_IMAGE_MEMORY_BARRIER;
+		clearToPresentBarrier.srcAccessMask = VK_ACCESS_TRANSFER_WRITE_BIT;
+		clearToPresentBarrier.dstAccessMask = VK_ACCESS_MEMORY_READ_BIT;
+		clearToPresentBarrier.oldLayout = VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL;
+		clearToPresentBarrier.newLayout = VK_IMAGE_LAYOUT_PRESENT_SRC_KHR;
+		clearToPresentBarrier.srcQueueFamilyIndex = queueIndices[0].index;
+		clearToPresentBarrier.dstQueueFamilyIndex = queueIndices[0].index;
+		clearToPresentBarrier.image = swapchainImages[index];
+		clearToPresentBarrier.subresourceRange = subResourceRange;
+
+		VkCommandBufferBeginInfo beginInfo = {};
+		beginInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO;
+		beginInfo.flags = VK_COMMAND_BUFFER_USAGE_SIMULTANEOUS_USE_BIT;
+		beginInfo.pInheritanceInfo = nullptr;
+
+		vkBeginCommandBuffer(commandBuffers[index], &beginInfo);
+
+		vkCmdPipelineBarrier(commandBuffers[index], VK_PIPELINE_STAGE_TRANSFER_BIT, VK_PIPELINE_STAGE_TRANSFER_BIT, 0, 0, nullptr, 0, nullptr, 1, &presentToClearBarrier);
+
+		vkCmdClearColorImage(commandBuffers[index], swapchainImages[index], VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, &vkclearColor, 1, &subResourceRange);
+
+		vkCmdPipelineBarrier(commandBuffers[index], VK_PIPELINE_STAGE_TRANSFER_BIT, VK_PIPELINE_STAGE_BOTTOM_OF_PIPE_BIT, 0, 0, nullptr, 0, nullptr, 1, &clearToPresentBarrier);
+
+		VkResult result = vkEndCommandBuffer(commandBuffers[index]);
+		if (result != VK_SUCCESS)
+			return 0x01;
+	}
 	return 0x00;
 }
