@@ -1,19 +1,33 @@
 ﻿  main.cpp
-c:\users\noahm\source\repos\da-wae-engine\da wae render engine\renderer.h(208): warning C4267: '=': conversion from 'size_t' to 'uint32_t', possible loss of data
-c:\users\noahm\source\repos\da-wae-engine\da wae render engine\renderer.h(220): warning C4018: '<': signed/unsigned mismatch
-c:\users\noahm\source\repos\da-wae-engine\da wae render engine\renderer.h(225): warning C4267: '=': conversion from 'size_t' to 'uint32_t', possible loss of data
-c:\users\noahm\source\repos\da-wae-engine\da wae render engine\renderer.h(272): warning C4018: '<': signed/unsigned mismatch
-c:\users\noahm\source\repos\da-wae-engine\da wae render engine\renderer.h(298): warning C4018: '<': signed/unsigned mismatch
-c:\users\noahm\source\repos\da-wae-engine\da wae render engine\renderer.h(321): warning C4018: '<': signed/unsigned mismatch
-c:\users\noahm\source\repos\da-wae-engine\da wae render engine\renderer.h(348): warning C4267: '=': conversion from 'size_t' to 'uint32_t', possible loss of data
-c:\users\noahm\source\repos\da-wae-engine\da wae render engine\renderer.h(352): warning C4267: '=': conversion from 'size_t' to 'uint32_t', possible loss of data
-c:\users\noahm\source\repos\da-wae-engine\da wae render engine\renderer.h(363): warning C4018: '<': signed/unsigned mismatch
-c:\users\noahm\source\repos\da-wae-engine\da wae render engine\renderer.h(381): warning C4018: '<': signed/unsigned mismatch
-c:\users\noahm\source\repos\da-wae-engine\da wae render engine\renderer.h(411): warning C4018: '<': signed/unsigned mismatch
-c:\users\noahm\source\repos\da-wae-engine\da wae render engine\renderer.h(421): warning C4018: '<': signed/unsigned mismatch
-c:\users\noahm\source\repos\da-wae-engine\da wae render engine\renderer.h(493): warning C4838: conversion from 'int' to 'uint32_t' requires a narrowing conversion
-c:\users\noahm\source\repos\da-wae-engine\da wae render engine\renderobject.h(348): warning C4244: 'argument': conversion from 'uint64_t' to 'int32_t', possible loss of data
-c:\users\noahm\source\repos\da-wae-engine\da wae render engine\main.cpp(27): warning C4930: 'Addons addons(void)': prototyped function not called (was a variable definition intended?)
-c:\users\noahm\source\repos\da-wae-engine\da wae render engine\renderer.h(189): warning C4715: 'Renderer::initVulkan': not all control paths return a value
-c:\users\noahm\source\repos\da-wae-engine\da wae render engine\renderer.h(498): warning C4715: 'chooseSwapExtent': not all control paths return a value
-  Da Wae Render Engine.vcxproj -> C:\Users\noahm\Source\Repos\Da-Wae-Engine\x64\Debug\Da Wae Render Engine.exe
+c:\users\noah metz\documents\github\da-wae-engine\da wae render engine\renderer.h(208): warning C4267: '=': conversion from 'size_t' to 'uint32_t', possible loss of data
+c:\users\noah metz\documents\github\da-wae-engine\da wae render engine\renderer.h(220): warning C4018: '<': signed/unsigned mismatch
+c:\users\noah metz\documents\github\da-wae-engine\da wae render engine\renderer.h(225): warning C4267: '=': conversion from 'size_t' to 'uint32_t', possible loss of data
+c:\users\noah metz\documents\github\da-wae-engine\da wae render engine\renderer.h(272): warning C4018: '<': signed/unsigned mismatch
+c:\users\noah metz\documents\github\da-wae-engine\da wae render engine\renderer.h(298): warning C4018: '<': signed/unsigned mismatch
+c:\users\noah metz\documents\github\da-wae-engine\da wae render engine\renderer.h(321): warning C4018: '<': signed/unsigned mismatch
+c:\users\noah metz\documents\github\da-wae-engine\da wae render engine\renderer.h(348): warning C4267: '=': conversion from 'size_t' to 'uint32_t', possible loss of data
+c:\users\noah metz\documents\github\da-wae-engine\da wae render engine\renderer.h(352): warning C4267: '=': conversion from 'size_t' to 'uint32_t', possible loss of data
+c:\users\noah metz\documents\github\da-wae-engine\da wae render engine\renderer.h(363): warning C4018: '<': signed/unsigned mismatch
+c:\users\noah metz\documents\github\da-wae-engine\da wae render engine\renderer.h(381): warning C4018: '<': signed/unsigned mismatch
+c:\users\noah metz\documents\github\da-wae-engine\da wae render engine\renderer.h(411): warning C4018: '<': signed/unsigned mismatch
+c:\users\noah metz\documents\github\da-wae-engine\da wae render engine\renderer.h(421): warning C4018: '<': signed/unsigned mismatch
+c:\users\noah metz\documents\github\da-wae-engine\da wae render engine\renderer.h(493): warning C4838: conversion from 'int' to 'uint32_t' requires a narrowing conversion
+c:\users\noah metz\documents\github\da-wae-engine\da wae render engine\renderobject.h(348): warning C4244: 'argument': conversion from 'uint64_t' to 'int32_t', possible loss of data
+c:\users\noah metz\documents\github\da-wae-engine\da wae render engine\main.cpp(27): warning C4930: 'Addons addons(void)': prototyped function not called (was a variable definition intended?)
+c:\users\noah metz\documents\github\da-wae-engine\da wae render engine\renderer.h(189): warning C4715: 'Renderer::initVulkan': not all control paths return a value
+c:\users\noah metz\documents\github\da-wae-engine\da wae render engine\renderer.h(498): warning C4715: 'chooseSwapExtent': not all control paths return a value
+glfw3.lib(context.obj) : warning LNK4099: PDB 'glfw.pdb' was not found with 'glfw3.lib(context.obj)' or at 'C:\Users\Noah Metz\Documents\GitHub\Da-Wae-Engine\x64\Debug\glfw.pdb'; linking object as if no debug info
+glfw3.lib(init.obj) : warning LNK4099: PDB 'glfw.pdb' was not found with 'glfw3.lib(init.obj)' or at 'C:\Users\Noah Metz\Documents\GitHub\Da-Wae-Engine\x64\Debug\glfw.pdb'; linking object as if no debug info
+glfw3.lib(input.obj) : warning LNK4099: PDB 'glfw.pdb' was not found with 'glfw3.lib(input.obj)' or at 'C:\Users\Noah Metz\Documents\GitHub\Da-Wae-Engine\x64\Debug\glfw.pdb'; linking object as if no debug info
+glfw3.lib(monitor.obj) : warning LNK4099: PDB 'glfw.pdb' was not found with 'glfw3.lib(monitor.obj)' or at 'C:\Users\Noah Metz\Documents\GitHub\Da-Wae-Engine\x64\Debug\glfw.pdb'; linking object as if no debug info
+glfw3.lib(vulkan.obj) : warning LNK4099: PDB 'glfw.pdb' was not found with 'glfw3.lib(vulkan.obj)' or at 'C:\Users\Noah Metz\Documents\GitHub\Da-Wae-Engine\x64\Debug\glfw.pdb'; linking object as if no debug info
+glfw3.lib(window.obj) : warning LNK4099: PDB 'glfw.pdb' was not found with 'glfw3.lib(window.obj)' or at 'C:\Users\Noah Metz\Documents\GitHub\Da-Wae-Engine\x64\Debug\glfw.pdb'; linking object as if no debug info
+glfw3.lib(win32_init.obj) : warning LNK4099: PDB 'glfw.pdb' was not found with 'glfw3.lib(win32_init.obj)' or at 'C:\Users\Noah Metz\Documents\GitHub\Da-Wae-Engine\x64\Debug\glfw.pdb'; linking object as if no debug info
+glfw3.lib(win32_joystick.obj) : warning LNK4099: PDB 'glfw.pdb' was not found with 'glfw3.lib(win32_joystick.obj)' or at 'C:\Users\Noah Metz\Documents\GitHub\Da-Wae-Engine\x64\Debug\glfw.pdb'; linking object as if no debug info
+glfw3.lib(win32_monitor.obj) : warning LNK4099: PDB 'glfw.pdb' was not found with 'glfw3.lib(win32_monitor.obj)' or at 'C:\Users\Noah Metz\Documents\GitHub\Da-Wae-Engine\x64\Debug\glfw.pdb'; linking object as if no debug info
+glfw3.lib(win32_time.obj) : warning LNK4099: PDB 'glfw.pdb' was not found with 'glfw3.lib(win32_time.obj)' or at 'C:\Users\Noah Metz\Documents\GitHub\Da-Wae-Engine\x64\Debug\glfw.pdb'; linking object as if no debug info
+glfw3.lib(win32_tls.obj) : warning LNK4099: PDB 'glfw.pdb' was not found with 'glfw3.lib(win32_tls.obj)' or at 'C:\Users\Noah Metz\Documents\GitHub\Da-Wae-Engine\x64\Debug\glfw.pdb'; linking object as if no debug info
+glfw3.lib(win32_window.obj) : warning LNK4099: PDB 'glfw.pdb' was not found with 'glfw3.lib(win32_window.obj)' or at 'C:\Users\Noah Metz\Documents\GitHub\Da-Wae-Engine\x64\Debug\glfw.pdb'; linking object as if no debug info
+glfw3.lib(wgl_context.obj) : warning LNK4099: PDB 'glfw.pdb' was not found with 'glfw3.lib(wgl_context.obj)' or at 'C:\Users\Noah Metz\Documents\GitHub\Da-Wae-Engine\x64\Debug\glfw.pdb'; linking object as if no debug info
+glfw3.lib(egl_context.obj) : warning LNK4099: PDB 'glfw.pdb' was not found with 'glfw3.lib(egl_context.obj)' or at 'C:\Users\Noah Metz\Documents\GitHub\Da-Wae-Engine\x64\Debug\glfw.pdb'; linking object as if no debug info
+  Da Wae Render Engine.vcxproj -> C:\Users\Noah Metz\Documents\GitHub\Da-Wae-Engine\x64\Debug\Da Wae Render Engine.exe
