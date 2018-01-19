@@ -58,3 +58,17 @@ struct UniformBufferObject
 	glm::mat4 view;
 	glm::mat4 proj;
 };
+
+struct memLoc
+{
+	uint64_t offset;
+	uint64_t size;
+};
+
+struct DescriptorData
+{
+	VkDescriptorSet descriptorSet;
+	VkBuffer uniformBuffer;
+	uint64_t offset;
+	uint64_t size;
+};

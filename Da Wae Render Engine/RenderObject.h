@@ -4,12 +4,6 @@
 #include "Renderer.h"
 #include <fstream>
 
-struct memLoc
-{
-	uint64_t offset;
-	uint64_t size;
-};
-
 class RenderObject
 {
 public:
@@ -22,16 +16,18 @@ public:
 	memLoc m_vertex;
 	memLoc m_index;
 	memLoc m_texture;
-	memLoc m_uniform;
+	uint64_t m_uniformSize;
 	
 	//Data layout
 	//	Byte 1: Flags: Tell the scene which arrays need to be filled
 	//		Flags: {Vertex, Index, Texture, Uniform, Unused, Unused, Unused, Unused}
-	//	2 Byte Segments: Size of each buffer
-	//	Null terminated sections of data, in the same layout as the flags.
+	//	2 Byte Segments: Size of each set of data
 	virtual byte* getData() = 0;
-	virtual byte draw(VkBuffer vertexBuffer, VkBuffer indexBuffer, VkBuffer textureBuffer, VkBuffer uniformBuffer, int queueIndex, byte* data) = 0;
+	virtual void updateDescriptorSet(Renderer* renderer, VkDeviceMemory bufferMemory, DescriptorData descriptorData, UniformBufferObject ubo, void* data) = 0;
+	virtual byte recordDraw(VkCommandBuffer cmdBuffer, VkDescriptorSet descriptorSet, byte* data) = 0;
 	virtual VkPipeline getPipeline() = 0;
+	virtual DescriptorData assignDescriptorSet(Renderer* renderer, VkBuffer uniformBuffer, uint64_t offset) = 0;
+	virtual void unassignDescriptorSet(Renderer* renderer, DescriptorData descriptorSet) = 0;
 
 	ObjectID id;
 };
@@ -239,15 +235,6 @@ public:
 
 			vkDestroyShaderModule(renderer->device, fragmentShader, nullptr);
 			vkDestroyShaderModule(renderer->device, vertexShader, nullptr);
-
-			VkDescriptorSetLayout layouts[] = { m_descriptorLayout };
-			VkDescriptorSetAllocateInfo allocInfo = {};
-			allocInfo.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_ALLOCATE_INFO;
-			allocInfo.descriptorPool = renderer->descriptorPool;
-			allocInfo.descriptorSetCount = 1;
-			allocInfo.pSetLayouts = layouts;
-
-			vkAllocateDescriptorSets(renderer->device, &allocInfo, &m_descriptorSet);
 		}
 	}
 
@@ -301,10 +288,67 @@ public:
 		return data;
 	}
 
-
-	//Data layout
-	byte draw(VkBuffer vertexBuffer, VkBuffer indexBuffer, VkBuffer textureBuffer, VkBuffer uniformBuffer, int queueIndex, byte* data)
+	DescriptorData assignDescriptorSet(Renderer* renderer, VkBuffer uniformBuffer, uint64_t offset)
 	{
+		DescriptorData descriptorData;
+		descriptorData.uniformBuffer = uniformBuffer;
+		descriptorData.size = sizeof(UniformBufferObject);
+		descriptorData.offset = UINT64_MAX;
+		VkDescriptorSetLayout layouts[] = { m_descriptorLayout };
+		VkDescriptorSetAllocateInfo allocInfo = {};
+		allocInfo.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_ALLOCATE_INFO;
+		allocInfo.descriptorPool = renderer->descriptorPool;
+		allocInfo.descriptorSetCount = 1;
+		allocInfo.pSetLayouts = layouts;
+
+		vkAllocateDescriptorSets(renderer->device, &allocInfo, &descriptorData.descriptorSet);
+
+		VkDescriptorBufferInfo bufferInfo = {};
+		bufferInfo.buffer = uniformBuffer;
+		bufferInfo.offset = offset;
+		bufferInfo.range = sizeof(UniformBufferObject);
+		
+		VkWriteDescriptorSet descriptorWrite = {};
+		descriptorWrite.sType = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
+		descriptorWrite.dstSet = descriptorData.descriptorSet;
+		descriptorWrite.dstBinding = 0;
+		descriptorWrite.dstArrayElement = 0;
+		descriptorWrite.descriptorType = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER;
+		descriptorWrite.descriptorCount = 1;
+		descriptorWrite.pBufferInfo = &bufferInfo;
+		descriptorWrite.pImageInfo = nullptr;
+		descriptorWrite.pTexelBufferView = nullptr;
+
+		vkUpdateDescriptorSets(renderer->device, 1, &descriptorWrite, 0, nullptr);
+
+		return descriptorData;
+	}
+
+	void unassignDescriptorSet(Renderer* renderer, DescriptorData descriptorData)
+	{
+		vkFreeDescriptorSets(renderer->device, renderer->descriptorPool, 1, &descriptorData.descriptorSet);
+	}
+	//Expects that the descriptorSet has been assigned a space to store it's data in uniformBuffer and that offset has been stored in descriptorData.offset
+	void updateDescriptorSet(Renderer* renderer, VkDeviceMemory bufferMemory, DescriptorData descriptorData, UniformBufferObject ubo, void* data)
+	{
+		void* mapPoint;
+		vkMapMemory(renderer->device, bufferMemory, descriptorData.offset, descriptorData.size, 0, &mapPoint);
+		memcpy(mapPoint, &ubo, descriptorData.size);
+		vkUnmapMemory(renderer->device, bufferMemory);
+	}
+
+	//Expects to be run per instance of the renderObjectobject while recording the command buffer for drawing the scene
+	//cmdBuffer is the command buffer being recorded, uniformBuffer is the buffer containting the uniform data, data is any generic data that could be passed 
+	byte recordDraw(VkCommandBuffer cmdBuffer, VkDescriptorSet descriptorSet, byte* data)
+	{
+		vkCmdBindPipeline(cmdBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS, m_pipeline);
+		//TODO: Figure out a way to upload all of the uniform data at once, then index through it instead of uploading parts of it to the GPU one after the other
+		vkCmdBindDescriptorSets(cmdBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS, m_pipelineLayout, 0, 1, &descriptorSet, 0, NULL);
+
+		vkCmdDrawIndexed(cmdBuffer, 36, 1, 0, m_vertex.offset, 0);
+		vkCmdBindPipeline(cmdBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS, nullptr);
+
+		/* Old code that was before I realized the queue needed to be recorded during the same renderpass.
 		if (m_drawBuffer == VK_NULL_HANDLE)
 		{
 			VkCommandBufferAllocateInfo allocInfo = {};
@@ -348,7 +392,7 @@ public:
 		submitInfo.commandBufferCount = 1;
 		submitInfo.pCommandBuffers = &m_drawBuffer;
 
-		vkQueueSubmit(p_renderer->graphicsQueues[queueIndex], 1, &submitInfo, VK_NULL_HANDLE);
+		vkQueueSubmit(p_renderer->graphicsQueues[queueIndex], 1, &submitInfo, VK_NULL_HANDLE);*/
 		return 0x00;
 	}
 
@@ -361,12 +405,8 @@ public:
 	static VkPipeline m_pipeline;
 	static VkDescriptorSetLayout m_descriptorLayout;
 	static VkPipelineLayout m_pipelineLayout;
-	static VkCommandBuffer m_drawBuffer;
-	static VkDescriptorSet m_descriptorSet;
 };
 
 VkPipeline Cube_R::m_pipeline = VK_NULL_HANDLE;
 VkDescriptorSetLayout Cube_R::m_descriptorLayout = VK_NULL_HANDLE;
 VkPipelineLayout Cube_R::m_pipelineLayout = VK_NULL_HANDLE;
-VkCommandBuffer Cube_R::m_drawBuffer = VK_NULL_HANDLE;
-VkDescriptorSet Cube_R::m_descriptorSet = VK_NULL_HANDLE;

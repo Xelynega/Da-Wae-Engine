@@ -10,6 +10,10 @@
 #include "Addons.h"
 #include "Scene.h"
 
+#define _CRTDBG_MAP_ALLOC
+#include <stdlib.h>
+#include <crtdbg.h>
+
 int main()
 {
 	Renderer app(glm::vec4(0.0f, 1.0f, 0.0f, 1.0));
@@ -19,7 +23,6 @@ int main()
 	app.initVulkan();
 
 	Cube_R redcube(glm::vec3(1.0f, 0.0f, 0.0f), &app);
-	redcube.getData();
 	
 	Addons addons();
 	
@@ -30,5 +33,6 @@ int main()
 		glfwPollEvents();
 		test.update(&app);
 	}
+	_CrtDumpMemoryLeaks();
 	return 0;
 }
