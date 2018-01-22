@@ -28,13 +28,17 @@ This purpose of this project is purely educational.
     - 2 byte segments giving the amount of data in each buffer(eg. the number of vertices in the buffer)
       - This allows for each function to return a max of 65,536 vertices as each vertex is 3*sizeof(float) large
     - Next segments are the actual data being passed
-  - draw() for drawing the renderobject given the buffers it's actually loaded to, a queue, and additional data(eg. a pointer to a dx12 texture for desktop rendering)
+  - recordDraw() for recording the required draw commands to the currently recording renderpass.
+  - assignDescriptorSet() returns a descriptorset to be used with the renderObjects pipeline
+  - unassingDescriptorSet() frees the Vulkan descriptor set
+  - updateDescriptorSet() takes in 
   - getPipeline() as an access method
 ### Object:
   - Since renderobjects can be used for multiple physical objects, Object stores the positional and physical aspects of the object and represents the instance of an object.
   - Contains a pointer to it's renderObject, or nullptr if it is not a renderable object.
   - Contains it's instanced object ID.
   - Only method so far is a constructor to create the item given an objectID to be looked up in the addon data
+  - Contains a DescripterObject which contains all the information needed to upadte and use the uniform buffer object associated with the object.
 ### Addons:
   - Addons are the meat and potatoes of the rendering. All pimitives, objects, renderobjects, textures, maps, and anything inbetween is stored in addon files.
   - The first couple ids are reserved for core addons(primitives, core objects, etc.), while the rest can be used however.
@@ -45,6 +49,8 @@ This purpose of this project is purely educational.
   - At some point there will need to be a method to save and load scenes into files so that there is some form of persistence.
   - Scenes are made up of a list of objects and the buffers that store all the render data for those objects renderobjects.
   - Scenes are where the main update function will eventually be.
+  - Stores the command buffer for drawing the scene, needs to be updated whenever objects are added or removed from the scene.ffer 
+  - Stores the VkDeviceMemory that points to the buffers as well.
   - Since renderobjects can be loaded and unloaded from the buffers whenevere, there is a function to optimize the buffer usage, repacking the buffers as tight as can be so that there isn't big chunks of unused data in use by the gpu.
   
 Well, that's all for now, as said previously the purpose of this engine is purely educational, so any flaws/strange decisions are either for the sake of learning or lack of knowledge.
